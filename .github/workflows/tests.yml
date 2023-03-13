@@ -5,6 +5,7 @@ on:
     branches:
       - master
   pull_request:
+  merge_group:
 
 env:
   HOMEBREW_DEVELOPER: 1
@@ -81,6 +82,11 @@ jobs:
             } else {
               console.log('No CI-syntax-only label found. Running tests job.')
               core.setOutput('syntax-only', 'false')
+            }
+
+            if (label_names.includes('CI-published-commit-bottles')) {
+              console.log('CI-published-commit-bottles label found. Skipping tests job.')
+              core.setOutput('syntax-only', 'true')
             }
 
             if (label_names.includes('CI-linux-large-runner')) {
